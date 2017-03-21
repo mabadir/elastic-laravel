@@ -30,6 +30,18 @@ $ composer require mabadir/elastic-laravel
 ```
 
 ## Usage
+Add the `ElasticLaravelServiceProvider` to your `config/app.php`.
+``` php
+'providers' => [
+//Other providers
+    MAbadir\ElasticLaravel\ElasticLaravelServiceProvider::class,
+],
+```
+
+Publish the `elastic.php` to your configuration.
+``` bash
+$ php artisan vendor:publish
+```
 Add the ElasticEloquent trait to your Eloquent model to have it indexed.
 
 ``` php

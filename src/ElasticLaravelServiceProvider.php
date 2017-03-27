@@ -3,6 +3,7 @@
 namespace MAbadir\ElasticLaravel;
 
 use Illuminate\Support\ServiceProvider;
+use MAbadir\ElasticLaravel\Console\Commands\ElasticIndexer;
 
 class ElasticLaravelServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,11 @@ class ElasticLaravelServiceProvider extends ServiceProvider
             __DIR__.'/../config/elastic.php' => config_path('elastic.php'),
         ]);
 
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ElasticIndexer::class
+            ]);
+        }
     }
 
     /**

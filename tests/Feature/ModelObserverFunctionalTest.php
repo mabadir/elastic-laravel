@@ -3,31 +3,17 @@
 namespace MAbadir\ElasticLaravel\Tests\Feature;
 
 use App\User;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Bus;
+use MAbadir\ElasticLaravel\Tests\BaseTest;
 use MAbadir\ElasticLaravel\Jobs\IndexModel;
 use MAbadir\ElasticLaravel\ElasticClient as Client;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ModelObserverFunctionalTest extends TestCase
+class ModelObserverFunctionalTest extends BaseTest
 {
     use DatabaseMigrations;
-
-    protected $host = 'http://localhost:9200/';
-    protected $index = 'test_index';
-    protected $client;
-
-    public function setUp()
-    {
-        parent::setUp();
-        try{
-            $this->request('DELETE', '?pretty');
-        }catch (\Exception $e){}
-
-        $this->client = new Client();
-    }
 
     /** @test */
     public function model_observer_dispatches_creation_job_when_model_is_created()
@@ -112,19 +98,4 @@ class ModelObserverFunctionalTest extends TestCase
         }
     }
 
-    /**
-     * Create HTTP request with the $method
-     * to $url using $body
-     *
-     * @param       $method
-     * @param       $url
-     * @param array $body
-     *
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     */
-    protected function request($method, $url, $body=[])
-    {
-        $guzzle = new \GuzzleHttp\Client(['base_uri' => $this->host]);
-        return $guzzle->request($method, $url, $body);
-    }
 }

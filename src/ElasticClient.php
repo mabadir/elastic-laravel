@@ -41,10 +41,12 @@ class ElasticClient
      * Merges Parameters received by client with index parameter
      *
      * @param $params
+     *
+     * @return array
      */
     protected function mergeParams($params)
     {
-        $this->params += $params;
+        return $this->params + $params;
     }
 
     /**
@@ -63,10 +65,9 @@ class ElasticClient
      *
      * @return array
      */
-    public function createIndex($params)
+    public function createIndex($params = [])
     {
-        $this->mergeParams($params);
-        return $this->client->indices()->create($this->params);
+        return $this->client->indices()->create($this->mergeParams($params));
     }
 
     /**
@@ -76,10 +77,9 @@ class ElasticClient
      *
      * @return array
      */
-    public function dropIndex($params)
+    public function dropIndex($params = [])
     {
-        $this->mergeParams($params);
-        return $this->client->indices()->delete($this->params);
+        return $this->client->indices()->delete($this->mergeParams($params));
     }
 
     /**
@@ -91,8 +91,19 @@ class ElasticClient
      */
     public function index($params)
     {
-        $this->mergeParams($params);
-        return $this->client->index($this->params);
+        return $this->client->index($this->mergeParams($params));
+    }
+
+    /**
+     * Retrieves a document of the given parameters
+     *
+     * @param $params
+     *
+     * @return array
+     */
+    public function get($params)
+    {
+        return $this->client->get($this->mergeParams($params));
     }
 
     /**
@@ -104,13 +115,30 @@ class ElasticClient
      */
     public function update($params)
     {
-        $this->mergeParams($params);
-        return $this->client->update($this->params);
+        return $this->client->update($this->mergeParams($params));
     }
 
+    /**
+     * Deletes a document of the given parameters
+     *
+     * @param $params
+     *
+     * @return array
+     */
     public function delete($params)
     {
-        $this->mergeParams($params);
-        return $this->client->delete($this->params);
+        return $this->client->delete($this->mergeParams($params));
+    }
+
+    /**
+     * Searches the index with the given params
+     *
+     * @param $params
+     *
+     * @return array
+     */
+    public function search($params)
+    {
+        return $this->client->search($this->mergeParams($params));
     }
 }

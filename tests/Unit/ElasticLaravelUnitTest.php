@@ -2,35 +2,19 @@
 
 namespace MAbadir\ElasticLaravel\Tests\Unit;
 
-use GuzzleHttp\Exception\ClientException;
-use Tests\TestCase;
 use Elasticsearch\Client as ElasticClient;
+use MAbadir\ElasticLaravel\Tests\BaseTest;
 use MAbadir\ElasticLaravel\ElasticClient as Client;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ElasticLaravelUnitTest extends TestCase
+class ElasticLaravelUnitTest extends BaseTest
 {
-    protected $host = 'localhost:9200/';
-    protected $index = 'test_index';
-    protected $client;
-
-    public function setUp()
-    {
-        parent::setUp();
-        try{
-            $this->request('DELETE', $this->host.$this->index.'?pretty');
-        }catch (\Exception $e){}
-        $this->client = new Client();
-    }
-
     /** @test */
     public function can_connect_to_elastic_search_instance()
     {
         $this->assertInstanceOf(ElasticClient::class, $this->client->getClient());
     }
-
-
 
     /** @test */
     public function can_index_to_elastic_search_index()
@@ -106,19 +90,24 @@ class ElasticLaravelUnitTest extends TestCase
         }
     }
 
-    /**
-     * Create HTTP request with the $method
-     * to $url using $body
-     *
-     * @param       $method
-     * @param       $url
-     * @param array $body
-     *
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     */
-    protected function request($method, $url, $body=[])
+    /** @test */
+    public function can_ge_a_document_from_elastic_search()
     {
-        $guzzle = new \GuzzleHttp\Client(['base_uri' => $this->host]);
-        return $guzzle->request($method, $url, $body);
+        $params = [
+            'type' => 'my_type',
+            'id' => 'my_id',
+            'body' => [ 'testField' => 'abc']
+        ];
+        $this->client->index($params);
+        $response = $this->request('GET',$this->index.'/my_type/my_id');
+        $this->assertContains('abc', json_decode($response->getBody()->getContents(),true));
+
+        $params = [
+            'type' => 'my_type',
+            'id' => 'my_id',
+        ];
+        $result = $this->client->get($params);
+        $this->assertArrayHasKey('_source', $result);
     }
+
 }

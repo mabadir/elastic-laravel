@@ -5,7 +5,28 @@ All Notable changes to `elastic-laravel` will be documented in this file.
 ## [Unreleased]
 - Nothing
 
-## [0.1.0] - 2017-03-21
+
+## [1.1.0] - 2017-03-21
+
+- Using standard Laravel functionality for Default Indexing values
+- Added search functionality
+
+### Added
+- ElasticSearcher class to perform all searching functionality
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Using `getKey()` and `getTable()` for default indexing.
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
+
+## [1.0.0] - 2017-03-21
 
 - Initial Release
 

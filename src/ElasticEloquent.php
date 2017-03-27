@@ -26,7 +26,7 @@ trait ElasticEloquent
      */
     public function getIndexType()
     {
-        return strtolower(str_plural(class_basename($this)));
+        return $this->getTable();
     }
 
     /**
@@ -35,7 +35,7 @@ trait ElasticEloquent
      */
     public function getIndexId()
     {
-        return $this->{$this->primaryKey};
+        return $this->getKey();
     }
 
     /**

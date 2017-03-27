@@ -5,6 +5,23 @@ All Notable changes to `elastic-laravel` will be documented in this file.
 ## [Unreleased]
 - Nothing
 
+## [1.1.1] - 2017-03-27
+
+### Added
+- Nothing
+
+### Deprecated
+- Nothing
+
+### Fixed
+- Added abstract methods `getTable()` and `getKey()` to `ElasticEloquent` trail.
+
+### Removed
+- Nothing
+
+### Security
+- Nothing
+
 
 ## [1.1.0] - 2017-03-21
 

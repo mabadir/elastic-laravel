@@ -46,4 +46,16 @@ trait ElasticEloquent
     {
         return $this->toArray();
     }
+
+    /**
+     * Returns the DB name
+     * @return mixed
+     */
+    public abstract function getTable();
+
+    /**
+     * Returns the model primary key
+     * @return mixed
+     */
+    public abstract function getKey();
 }

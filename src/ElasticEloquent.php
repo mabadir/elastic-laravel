@@ -8,6 +8,7 @@
 
 namespace MAbadir\ElasticLaravel;
 
+use MAbadir\ElasticLaravel\Jobs\IndexModel;
 use MAbadir\ElasticLaravel\Observers\ModelObserver;
 
 trait ElasticEloquent
@@ -45,6 +46,21 @@ trait ElasticEloquent
     public function getSearchableIndex()
     {
         return $this->toArray();
+    }
+
+    /**
+     * Reindexes the model
+     */
+    public function reindex()
+    {
+        $params = [
+            'type' => $this->getIndexType(),
+            'id' => $this->getIndexId(),
+            'body' => [
+                'doc' => $this->getSearchableIndex()
+            ],
+        ];
+        dispatch(new IndexModel($this, $params,'update'));
     }
 
     /**
